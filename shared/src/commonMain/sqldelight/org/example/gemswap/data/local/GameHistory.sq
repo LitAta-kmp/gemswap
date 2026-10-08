@@ -1,0 +1,24 @@
+CREATE TABLE GameHistoryEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    score INTEGER NOT NULL,
+    playedAt TEXT NOT NULL
+);
+
+insertRound:
+INSERT INTO GameHistoryEntity(score, playedAt)
+VALUES (?, ?);
+
+selectAllRounds:
+SELECT * FROM GameHistoryEntity
+ORDER BY score DESC;
+
+selectBestScore:
+SELECT MAX(score) FROM GameHistoryEntity;
+
+trimToTopN:
+DELETE FROM GameHistoryEntity
+WHERE id NOT IN (
+    SELECT id FROM GameHistoryEntity
+    ORDER BY score DESC
+    LIMIT :limit
+);
